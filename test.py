@@ -1,5 +1,4 @@
-for i in range(5):
-    if i == 6:
-        break
-else:
-    print("ELSE")
+x = []
+x.insert(0, [0] * 5)
+x.insert(0, 2)
+print(x)

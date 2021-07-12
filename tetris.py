@@ -4,22 +4,26 @@ import random
 from figures import transpose, generate_figure
 
 
+LINE_COMPLETE = 100
+FIGURE_DROP = 10
 COEFFICIENT = 0.95
 
 
 class Tetris:
-    next = None
-    current = None
-    pos = None
-
-    update_time = 1  # step per 1 second
-    time = 0
-
-    back_board = None
-
     def __init__(self, width, height):
         self.width, self.height = width, height
         self.board = [[0] * width] * height
+
+        self.next = None
+        self.current = None
+        self.pos = None
+
+        self.update_time = 1  # step per 1 second
+        self.time = 0
+
+        self.back_board = None
+
+        self.pts = 0
 
     def start(self):
         self.next = generate_figure()
@@ -65,16 +69,31 @@ class Tetris:
         self.board = board
 
     def step(self):
-        board = self.figure_board(self.current, (self.pos[0], self.pos[1] + 1))
+        pos = (self.pos[0], self.pos[1] + 1)
+        board = self.figure_board(self.current, pos)
         if board:
+            self.pos = pos
             self.update_board(board)
         else:
+            self.remove_full()
+
+            self.pts += FIGURE_DROP
             self.next_figure()
+
+    def remove_full(self):
+        for line in self.board:
+            if not line.count(0):
+                self.board.remove(line)
+                self.board.insert(0, [0] * self.width)
+
+                self.update_time *= COEFFICIENT
+                self.pts += LINE_COMPLETE
 
     def rotate(self):
         figure = transpose(self.current)
         board = self.figure_board(figure, self.pos)
         if board:
+            self.current = figure
             self.update_board(board)
 
     def update(self, delta):
@@ -82,4 +101,3 @@ class Tetris:
         if self.time >= self.update_time:
             self.step()
             self.time = 0
-            self.update_time *= COEFFICIENT
