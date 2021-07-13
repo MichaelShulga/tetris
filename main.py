@@ -1,6 +1,6 @@
 import pygame
 
-from config import WIDTH, HEIGHT, FPS
+from config import WIDTH, HEIGHT, FPS, TETRIS_SIZE
 
 from controller import TetrisController
 
@@ -9,7 +9,7 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 
-    tetris_controller = TetrisController()
+    tetris_controller = TetrisController(TETRIS_SIZE)
 
     clock = pygame.time.Clock()
     running = True
@@ -18,9 +18,9 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-        clock.tick(FPS)
+        delta = clock.tick(FPS)
 
-
+        tetris_controller.update(delta)
 
         screen.fill(pygame.Color("grey"))
 

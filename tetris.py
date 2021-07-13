@@ -23,9 +23,11 @@ class Tetris:
 
         self.back_board = None
 
+        self.running = False
         self.pts = 0
 
     def start(self):
+        self.running = True
         self.next = generate_figure()
         self.next_figure()
 
@@ -89,6 +91,13 @@ class Tetris:
                 self.update_time *= COEFFICIENT
                 self.pts += LINE_COMPLETE
 
+    def move(self, x=0, y=0):
+        pos = (self.pos[0] + x, self.pos[1] + y)
+        board = self.figure_board(self.current, pos)
+        if board:
+            self.pos = pos
+            self.update_board(board)
+
     def rotate(self):
         figure = transpose(self.current)
         board = self.figure_board(figure, self.pos)
@@ -97,7 +106,8 @@ class Tetris:
             self.update_board(board)
 
     def update(self, delta):
-        self.time += delta
-        if self.time >= self.update_time:
-            self.step()
-            self.time = 0
+        if self.running:
+            self.time += delta
+            if self.time >= self.update_time:
+                self.step()
+                self.time = 0
