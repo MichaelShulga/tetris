@@ -1,12 +1,18 @@
-class A:
-    def __init__(self, a):
-        self.a = a
+import pygame
+from board import Board
+import copy
 
-    def reinit(self):
-        self.__init__('reinit')
+sprites = pygame.sprite.Group()
 
+rect = pygame.Rect(1, 1, 1, 1)
+cell_size = 20
 
-a = A('a')
-print(a.a)
-a.reinit()
-print(a.a)
+s1 = Board(rect, cell_size, sprites)
+a = copy.copy(s1)
+
+s1.__init__(rect, cell_size)
+
+print(a == s1)
+print(sprites.sprites()[0] == s1)
+print(sprites)
+

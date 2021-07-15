@@ -1,4 +1,5 @@
-s = pygame.Surface((1000,750))  # the size of your rect
-s.set_alpha(128)                # alpha level
-s.fill((255,255,255))           # this fills the entire surface
-windowSurface.blit(s, (0,0))
+import copy
+
+a = [[0] * 3 for _ in range(5)]
+print(a)
+print(list(zip(*a)))

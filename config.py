@@ -1,6 +1,8 @@
-WIDTH, HEIGHT = 1200, 600
-FPS = 300
+WIDTH, HEIGHT = 480, 600
+FPS = 0
 
 FONT = "bahnschrift"
 
-TETRIS_SIZE = (10, 20)
+TETRIS_SIZE = (10, 14)
+
+BORDER = 1

@@ -18,12 +18,12 @@ figure7 = [[0, 7, 7],
 figures = [figure1, figure2, figure3, figure4, figure5, figure6, figure7]
 
 
-def transpose(matrix):
-    return [[j[i] for j in matrix] for i in reversed(range(len(matrix)))]
+def transposed(matrix):
+    return list(zip(*matrix))
 
 
-def generate_figure():
+def get_figure():
     figure = random.choice(figures)
     for _ in range(random.randint(0, 3)):
-        transpose(figure)
+        transposed(figure)
     return figure

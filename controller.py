@@ -1,24 +1,35 @@
 import pygame
 
-from tetris import Tetris
+from model import TetrisModel
+from view import TetrisBoard, FigureBoard
 
 
 class TetrisController:
-    def __init__(self, size):
-        self.tetris = Tetris(*size)
+    def __init__(self, size, tetris_rect, figure_rect, cell_size, group):
+        self.model = TetrisModel(*size)
+
+        self.tetris_board = TetrisBoard(tetris_rect, cell_size, group)
+        self.figure_board = FigureBoard(figure_rect, cell_size, group)
 
     def update(self, delta):
-        self.tetris.update(delta)
-        self.main_board.render()
-        self.current_figure.render()
+        self.model.update(delta)
+        self.tetris_board.render(self.model.board)
+        self.figure_board.render(self.model.next)
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                self.tetris.rotate()
+                self.model.rotate()
             if event.key == pygame.K_DOWN:
-                self.tetris.move(y=1)
+                self.model.move(y=1)
             if event.key == pygame.K_LEFT:
-                self.tetris.move(x=-1)
+                self.model.move(x=-1)
             if event.key == pygame.K_RIGHT:
-                self.tetris.move(x=1)
+                self.model.move(x=1)
+
+            if event.key == pygame.K_SPACE:
+                self.model.start()
+
+    def resize(self, tetris_rect, figure_rect, cell_size):
+        self.tetris_board.__init__(tetris_rect, cell_size)
+        self.figure_board.__init__(figure_rect, cell_size)
